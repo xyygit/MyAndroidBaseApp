@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 中文字体 -->
+    <dimen name="fc_A">18dip</dimen>
+    <dimen name="fc_B">16dip</dimen>
+    <dimen name="fc_C">14dip</dimen>
+    <dimen name="fc_D">12dip</dimen>
+    <dimen name="fc_E">10dip</dimen>
+    <!-- 数字及英文字体 -->
+    <dimen name="fd_0_72">36dp</dimen>
+    <dimen name="fd_0_48">24dp</dimen>
+    <dimen name="fd_1_50">25dp</dimen>
+    <dimen name="fd_1_32">16dp</dimen>
+    <dimen name="fd_2_40">20dp</dimen>
+    <dimen name="fd_2_28">14dp</dimen>
+    <dimen name="fd_3_36">18dp</dimen>
+    <dimen name="fd_3_24">12dp</dimen>
+    <dimen name="fd_4_32">16dp</dimen>
+    <dimen name="fd_4_22">11dp</dimen>
+    <dimen name="fd_5_28">14dp</dimen>
+    <dimen name="fd_6_24">12dp</dimen>
+
+    <!--<dimen name="fd_A72">36dip</dimen>-->
+    <!--<dimen name="fd_A48">24dip</dimen>-->
+    <!--<dimen name="fd_B40">20dip</dimen>-->
+    <!--<dimen name="fd_B28">14dip</dimen>-->
+    <!--<dimen name="fd_C36">18dip</dimen>-->
+    <!--<dimen name="fd_C24">12dip</dimen>-->
+    <!--<dimen name="fd_D32">16dip</dimen>-->
+    <!--<dimen name="fd_D22">11dip</dimen>-->
+    <!--<dimen name="fd_E28">14dip</dimen>-->
+    <!--<dimen name="fd_E20">10dip</dimen>-->
+    <!--<dimen name="fd_F24">12dip</dimen>-->
+
+    <dimen name="font_size_9">9dip</dimen>
+    <dimen name="font_size_22">11dip</dimen>
+    <dimen name="font_size_44">22dip</dimen>
+    <dimen name="font_size_52">26dip</dimen>
+    <dimen name="font_size_58">29dip</dimen>
+    <dimen name="font_size_68">34dip</dimen>
+    <!--font size end-->
+</resources>

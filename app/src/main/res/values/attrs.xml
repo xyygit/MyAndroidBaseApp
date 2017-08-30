@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ViewPager圆点指示器 -->
+    <declare-styleable name="BannerIndicatorView">
+        <attr name="cell_side_length" format="dimension" />
+        <attr name="cell_padding" format="dimension" />
+        <attr name="cell_left_padding" format="dimension" />
+        <attr name="cell_right_padding" format="dimension" />
+        <attr name="cell_stroke_size" format="dimension" />
+        <attr name="dot_gravity" format="integer">
+            <enum name="left" value="1" />
+            <enum name="center" value="2" />
+            <enum name="right" value="3" />
+        </attr>
+        <attr name="normal" format="reference" />
+        <attr name="focused" format="reference" />
+    </declare-styleable>
+</resources>

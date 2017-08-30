@@ -8,13 +8,13 @@
         android:normalScreens="true"
         android:resizeable="true"
         android:smallScreens="true"
-        android:xlargeScreens="true"/>
+        android:xlargeScreens="true" />
 
     <!-- ******************** permission define ******************** -->
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <!-- ******************** permission define end ******************** -->
 
     <application
@@ -33,27 +33,29 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
+                <action android:name="android.intent.action.VIEW" />
 
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="fnfresh"/>
+                <data android:scheme="yannDemo" />
             </intent-filter>
         </activity>
 
         <!-- 主入口 -->
-        <activity android:name=".home.activity.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity
+            android:name=".home.activity.MainActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"></activity>
+        <!-- 广告引导页 -->
+        <activity
+            android:name=".welcome.activity.GuideActivity"
+            android:screenOrientation="portrait" />
 
         <!-- ******************** activity define end ******************** -->
 
@@ -80,37 +82,37 @@
             android:value="${RONG_CLOUD_APP_KEY}" />
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="58f47e7eb27b0a74a40015ca"/>
+            android:value="58f47e7eb27b0a74a40015ca" />
         <meta-data
             android:name="UMENG_CHANNEL"
-            android:value="CHANNEL_VALUE"/>
+            android:value="CHANNEL_VALUE" />
         <meta-data
             android:name="WEIXIN_APPID"
-            android:value="wxd3ce4d34d9d23316"/>
+            android:value="wxd3ce4d34d9d23316" />
         <meta-data
             android:name="WEIXIN_APPSECRET"
-            android:value="bcf86e126957e5579f882b4bffc39f2f"/>
+            android:value="bcf86e126957e5579f882b4bffc39f2f" />
         <meta-data
             android:name="TENCENT_APPKEY"
-            android:value="8apd8NN02YjrFyTD"/>
+            android:value="8apd8NN02YjrFyTD" />
         <meta-data
             android:name="TENCENT_APPID"
-            android:value="qq1105959253"/>
+            android:value="qq1105959253" />
         <meta-data
             android:name="SINA_APPKEY"
-            android:value="wb750655413"/>
+            android:value="wb750655413" />
         <meta-data
             android:name="SINA_APPSECRET"
-            android:value="11153d7b2abdafa78d664cc9821eec2c"/>
+            android:value="11153d7b2abdafa78d664cc9821eec2c" />
         <meta-data
             android:name="PUSH_APPID"
-            android:value="xmOhid1y4r5vVoYDCy5wr1"/>
+            android:value="xmOhid1y4r5vVoYDCy5wr1" />
         <meta-data
             android:name="PUSH_APPKEY"
-            android:value="StljWxrnNf5FO276QFbdM4"/>
+            android:value="StljWxrnNf5FO276QFbdM4" />
         <meta-data
             android:name="PUSH_APPSECRET"
-            android:value="HabIZtDkHJ8bnBfygVlbe"/>
+            android:value="HabIZtDkHJ8bnBfygVlbe" />
         <meta-data
             android:name="PGYER_APPID"
             android:value="f91a38ab73e2944527f2ee4c87ce5ee0"></meta-data>

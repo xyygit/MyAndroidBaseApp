@@ -1,6 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="color_main">#d7063b</color> <!--导航栏、需特别强调的底色、按钮、价格、标签、icon, 所有文字高亮和色块表现。-->
+    <color name="color_black">#000000</color> <!--字体颜色、控件、icon-->
+    <color name="color_dark_grey">#333333</color> <!--字体颜色、模块名称、控件-->
+    <color name="color_medium_grey">#666666</color> <!--普通级段落商品信息标题,内容字。-->
+    <color name="color_light_grey">#999999</color> <!--字体颜色、不可点击的色彩-->
+    <color name="color_super_Light_grey">#bbbbbb</color> <!--部分控件描边、icon-->
+    <color name="color_button_grey">#dedede</color> <!--不可点击的按钮背景颜色-->
+    <color name="color_line">#e5e5e5</color> <!--线条、模块图片之间的间隔线条-->
+    <color name="color_background">#f2f2f2</color> <!--背景色-->
+    <color name="color_light_yellow">#ffebc3</color> <!--用于警示、提示底色-->
+    <color name="color_blue">#007aff</color> <!--字体链接颜色-->
+    <color name="color_white">#fffffe</color>
+
+    <color name="color_ff2e2e">#ff2e2e</color>
+    <color name="color_fcee50">#fcee50</color>
+    <color name="color_ffd8d8">#ffd8d8</color>
+    <color name="color_ec688d">#ec688d</color>
+    <color name="color_ff6600">#ff6600</color>
+    <color name="color_fff3f6">#fff3f6</color>
+    <color name="color_fdf2f5">#fdf2f5</color>
+    <color name="color_ffd9e9">#ffd9e9</color>
+    <color name="color_fdeccb">#fdeccb</color>
+    <color name="color_6679b3">#6679b3</color>
+    <color name="color_09bb07">#09bb07</color>
+    <color name="color_009888">#009888</color>
+    <color name="color_ff4400">#ff4400</color>
+    <color name="color_e0e0e0">#e0e0e0</color>
+    <color name="color_ffd87a">#ffd87a</color>
+    <color name="color_f3602c">#f3602c</color>
+    <color name="color_ea5504">#ea5504</color>
+    <color name="color_fff45e">#fff45e</color>
+    <color name="color_740400">#740400</color>
+    <color name="color_half_alpha_black">#7f000000</color>
+
+
 </resources>
