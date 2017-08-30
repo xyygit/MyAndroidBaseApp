@@ -1,0 +1,10 @@
+<resources>
+    <!--font size -->
+    <dimen name="ex_font_size_12">12dip</dimen>
+    <dimen name="ex_font_size_14">14dip</dimen><!--normal-->
+    <dimen name="ex_font_size_18">18dip</dimen>
+    <dimen name="ex_font_size_22">22dip</dimen><!--title-->
+    <dimen name="ex_font_size_26">26dip</dimen>
+    <!--font size end-->
+
+</resources>

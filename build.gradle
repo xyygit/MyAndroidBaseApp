@@ -1,0 +1,35 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.3.3'
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+    }
+    project.ext {
+        support_appcompat_v7 = 'com.android.support:appcompat-v7:25.3.1'
+        support_recyclerview_v7 = 'com.android.support:recyclerview-v7:22.2.1'
+        support_support_v4 =  'com.android.support:support-v4:22.2.1'
+        support_design = 'com.android.support:design:23.4.0'
+        fresco = 'com.facebook.fresco:fresco:0.11.0'
+        fresco_animated_gif = 'com.facebook.fresco:animated-gif:0.11.0'
+        fresco_animated_webp = 'com.facebook.fresco:animated-webp:0.11.0'
+        fresco_webpsupport = 'com.facebook.fresco:webpsupport:0.11.0'
+        fresco_imagepipeline = 'com.facebook.fresco:imagepipeline:0.11.0'
+        fresco_drawee = 'com.facebook.fresco:drawee:0.11.0'
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

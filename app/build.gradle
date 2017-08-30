@@ -1,0 +1,264 @@
+apply plugin: 'com.android.application'
+
+android {
+    /** 版本号前3段: 根据需要修改 */
+    def verNamePrefix = "1.1.1"
+    /** 计算出当前版本号，自增 */
+    def currentVersionName = getVersionName(verNamePrefix)
+    /** 根据buildType，拷贝当前的环境文件：线上 或者 测试 */
+    copyCurprop();
+    /** 设置签名信息 */
+    signingConfigs {
+        release {
+            keyAlias 'yann'
+            keyPassword 'yann123'
+            storeFile file('release.jks')
+            storePassword 'yann123'
+            v2SigningEnabled false
+        }
+    }
+
+    compileSdkVersion 25
+    buildToolsVersion '25.0.3'
+    aaptOptions.cruncherEnabled = false
+    aaptOptions.useNewCruncher = false
+
+    /** 编译的 lint 开关 */
+    lintOptions {
+        abortOnError false
+    }
+    //android6.0 没有httpclient了，如用android23编译，需要加上该行，android23以下的不需要加这行
+    useLibrary 'org.apache.http.legacy'
+
+    /** 默认配置（全局）*/
+    defaultConfig {
+        applicationId "com.yann.demo"
+        minSdkVersion 15
+        targetSdkVersion 25
+        versionName currentVersionName
+
+        buildConfigField "String", "apiVersion", "\"101\""
+        buildConfigField "String", "apiVersionNum", "\"1.01\""
+
+        ndk{
+            moduleName "RSA"
+            ldLibs "log", "z", "m"
+            abiFilters "armeabi", "armeabi-v7a"
+        }
+        resConfigs "en", "zh"
+
+        //支持多个dex文件的编译
+        multiDexEnabled true
+
+        jackOptions {
+            enabled false
+        }
+    }
+    /** 配置DEX构建属性，加快DEX文件的生成速度 */
+    dexOptions {
+        preDexLibraries true //声明是否预先编译依赖库，从而加快构建速度
+        maxProcessCount 8    //设置进程运行过程中可以使用的最大线程数。默认值为4。
+        javaMaxHeapSize "2048m" //设置DEX编译器的最大堆大小，堆或者栈都是用于存放暂时不用的垃圾，当内存不足时，垃圾回收机制会清除过时的缓存，堆大小决定垃圾清除的频率，影响着构建的速度
+    }
+    /**
+     * 创建构建类型
+     */
+    buildTypes {
+        release { //线上版本配置
+            manifestPlaceholders = [YZ_APP_ID:"xxxx", RONG_CLOUD_APP_KEY:"xxxxxx"]
+            minifyEnabled true
+            zipAlignEnabled true  //开启Zipalign优化
+            shrinkResources true  //移除无用的resource文件，此项只有在开启混淆时才生效
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+        offline { //测试版本配置
+            manifestPlaceholders = [YZ_APP_ID:"xxxxxxx", RONG_CLOUD_APP_KEY:"xxxxxxxxxxxx"]
+            minifyEnabled true
+            zipAlignEnabled true  //开启Zipalign优化
+            shrinkResources true  //移除无用的resource文件，此项只有在开启混淆时才生效
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+        debug {//开发版本配置
+            manifestPlaceholders = [YZ_APP_ID:"xxxxxxxxxxxxxx", RONG_CLOUD_APP_KEY:"xxxxxxxxxxxxxx"]
+            signingConfig signingConfigs.release
+        }
+    }
+    /**
+     * 创建多种产品发布版本
+     */
+    productFlavors {
+        Preview { //线上版本配置
+            buildConfigField "String", "apiConfigOfEnv", "\"Preview\""
+        }
+        Beta { //测试版本配置
+            buildConfigField "String", "apiConfigOfEnv", "\"Beta\""
+        }
+        Dev {//开发版本配置
+            buildConfigField "String", "apiConfigOfEnv", "\"Dev\""
+        }
+    }
+
+    /**
+     * 修改版本号， 修改gradle生成的中间文件values.xms
+     */
+    def replaceVerName = { variant, fromString, toString ->
+        File valuesFile = file("${buildDir}/intermediates/res/merged/${variant.dirName}/values/values.xml");
+        println "in replaceVerName , toString: " + toString;
+        if (valuesFile.canRead()) {
+            println 'in replaceVerName, values.mxl can read'
+            String content = valuesFile.getText(Consts.UTF8);
+            content = content.replaceAll(fromString, toString);
+            valuesFile.write(content, Consts.UTF8);
+        }else {
+            println 'in replaceVerName, values.mxl can not read'
+        }
+    }
+
+    /** 删除中间生成文件 values.xml */
+    def deleteValueFile = {variant ->
+        File valuesFile = file("${buildDir}/intermediates/res/merged/${variant.dirName}/values/values.xml");
+        try {
+            println '删除文件路径：' + valuesFile.absolutePath;
+            valuesFile.delete();
+        }catch (Exception e) {
+            println '删除文件异常：' + e.getMessage();
+        }
+    }
+
+    android.applicationVariants.all { variant ->
+        // apk输出路径，注意，从AS运行，默认使用debug包路径
+        def runTasks = gradle.startParameter.taskNames
+        if(Consts.buildTypeRelease in runTasks || Consts.buildTypeOffline in runTasks) {
+            variant.outputs.each{ output ->
+                output.outputFile = new File(getOutApkPath(variant, currentVersionName));
+            }
+        }
+
+        // 删除gradel生成的中间文件values.xml，确保执行mergeResources这个tasks； PS：debug时如果无需合并资源，则不会走mergeResources，所以通过删除values.xml，确保执行
+        if(Consts.buildTypeRunDebug in runTasks || Consts.buildTypeDebug in runTasks) {
+            deleteValueFile(variant);
+        }
+
+        // 版本号自增，在mergeResources task结束后执行
+        variant.mergeResources.doLast {
+            println "mergeResources.doLast, dir name : " + variant.dirName;
+            replaceVerName(variant, Consts.appVerNameValue, currentVersionName);
+        }
+
+    }
+
+}
+
+/**
+ * current_use.properties内容设置，根据线上、线下区分
+ */
+def copyCurprop() {
+    def curPropFile = file(Consts.curUsePropFp);
+    def varPropFp;
+
+    def runTasks = gradle.startParameter.taskNames;
+    if(Consts.buildTypeRelease in runTasks) { //线上
+        varPropFp = Consts.onlinePropFp;
+    }else { //测试
+        varPropFp = Consts.offlinePropFp;
+    }
+    println "copyCurprop ：" + varPropFp;
+    def varPropFile = file(varPropFp);
+    String varContent = varPropFile.getText(Consts.UTF8);
+    curPropFile.write(varContent, Consts.UTF8);
+}
+
+
+/**
+ * 版本号自增计算，测试环境版本号为4个段，线上环境版本号为3个段
+ * @param verNamePrefix : 版本号前缀
+ * @return
+ */
+def getVersionName(verNamePrefix) {
+    def targetVerName = verNamePrefix;
+
+    def versionPropsFile = file(Consts.confPropFp);
+    if(versionPropsFile.canRead()) {
+        println 'conf.properties can read'
+        def Properties versionProps = new Properties()
+        versionProps.load(new FileInputStream(versionPropsFile))
+        def verName = versionProps[Consts.verNamePropKey].toInteger()
+        def runTasks = gradle.startParameter.taskNames
+        println 'in getVersionName , runTasks: ' + runTasks;
+        if(Consts.buildTypeOffline in runTasks || Consts.buildTypeDebug in runTasks || Consts.buildTypeRunDebug in runTasks) { //打测试包时才自增版本号， 线上包的版本号手动改
+            targetVerName += "." + (++verName);  //版本号自增1
+            versionProps[Consts.verNamePropKey] = verName.toString();
+            versionProps.store(versionPropsFile.newWriter(), null) //增1后的版本号写入properties文件
+        }
+    }
+    println "targetVerName: " + targetVerName;
+    return targetVerName;
+}
+
+/**
+ * 输出apk文件完整路径，apk命名方式(自己去定)：xxxxxxxxx_versionName.apk
+ * @param variant
+ * @param versionName
+ * @return
+ */
+def getOutApkPath(variant, versionName) {
+    def outPath = "./"
+    def confPropsFile = file(Consts.confPropFp);
+    if(confPropsFile.canRead()) {
+        def Properties confProps = new Properties();
+        confProps.load(new FileInputStream(confPropsFile));
+        outPath = confProps[Consts.outApkPathPropKey];
+    }
+    def String finalOutPath = outPath + "yann_" + versionName + ".apk"; //apk名称自己去定
+    println "最终输出路径：" + finalOutPath
+    return finalOutPath;
+}
+
+/**
+ * 脚本用到的常量定义
+ */
+interface Consts{
+    /** buildType 类型名 */
+    final String buildTypeRelease = 'assembleRelease';
+    final String buildTypeOffline = 'assembleOffline';
+    final String buildTypeDebug = 'assembleDebug';
+    final String buildTypeRunDebug = ':app:assembleDebug'; //自己debug的时候看一下自己主工程名
+
+    /** current_use.properties 文件路径 */
+    final String curUsePropFp = './src/main/res/raw/current_use.properties';
+    /** online.properties 文件路径 */
+    final String onlinePropFp = './src/main/res/raw/online.properties';
+    /** test.properties 文件路径 */
+    final String offlinePropFp = './src/main/res/raw/test.properties';
+    final String UTF8 = 'UTF-8';
+
+    /** 配置文件名 */
+    final String confPropFp = 'conf.properties';
+    /** VERSION_NAME 在配置文件中的字段名：版本号中的第四个字段 */
+    final String verNamePropKey = 'VERSION_NAME';
+    /** OUT_APK_PATH 在配置文件中的字段名：apk输出目录 */
+    final String outApkPathPropKey = 'OUT_APK_PATH';
+
+    /** 在strings.xml中版本号值名称 */
+    final String appVerNameValue = 'app_version_value';
+
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.android.support:multidex:1.0.0'
+    compile project.ext.support_appcompat_v7
+    compile project.ext.support_support_v4
+    compile project.ext.support_recyclerview_v7
+    compile project.ext.support_design
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.2'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.2'
+
+    compile project(path: ':lib-core')
+    testCompile 'junit:junit:4.12'
+}

@@ -1,0 +1,33 @@
+apply plugin: 'com.android.library'
+android {
+    compileSdkVersion 25
+    buildToolsVersion '25.0.3'
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+    }
+
+    compileOptions {
+        targetCompatibility 1.7
+        sourceCompatibility 1.7
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile project.ext.support_appcompat_v7
+    compile project.ext.support_support_v4
+    compile project.ext.support_recyclerview_v7
+    compile project.ext.support_design
+    compile project.ext.fresco
+    compile project.ext.fresco_animated_gif
+    compile project.ext.fresco_animated_webp
+    compile project.ext.fresco_webpsupport
+    compile project.ext.fresco_imagepipeline
+    compile project.ext.fresco_drawee
+    compile files('libs/fastjson-1.1.52.android.jar')
+    compile files('libs/okhttp-3.3.1.jar')
+}
